@@ -1,1 +1,1 @@
-export * from './blox-js-sdk'
+export * from './yah-js-sdk'

@@ -5,7 +5,7 @@ let clientId = null
 const authorizationEndpoint =
   process.env && process.env.SHIELD_AUTH_URL
     ? process.env.SHIELD_AUTH_URL
-    : 'https://shield.appblox.io/'
+    : 'https://shield.yahilo.com/'
 
 const getCodeInUrl = function () {
   const parsedQuery = qs.parseUrl(window.location.href)
@@ -20,18 +20,18 @@ class TokenStore {
     }
   }
   get clientId() {
-    return this._client_id;
+    return this._client_id
   }
   set clientId(id) {
     if (id) {
-      this._client_id = id;
+      this._client_id = id
     }
   }
 
   t
   rt
   te
-  _client_id = null;
+  _client_id = null
   sendRefreshBefore = 10000
   timeoutHandle
   setToken(token) {
@@ -152,7 +152,7 @@ export const verifyLogin = async (mode = 'login') => {
   }
 }
 const validateAccessToken = async () => {
-  const server = `${authorizationEndpoint}validate-appblox-acess-token`
+  const server = `${authorizationEndpoint}validate-yahilo-acess-token`
   try {
     const res = await fetch(server, {
       method: 'GET',
@@ -161,7 +161,7 @@ const validateAccessToken = async () => {
         Authorization: `Bearer ${tokenStore.getToken()}`,
       },
     })
-    const data = await res.json() // access token set to appblox io cookie
+    const data = await res.json() // access token set to yahilo io cookie
 
     return data.data && data.data === 'valid'
   } catch (error) {
@@ -178,7 +178,7 @@ const shieldLogout = async () => {
         Authorization: `Bearer ${tokenStore.getToken()}`,
       },
     })
-    const data = await res.json() // access token set to appblox io cookie
+    const data = await res.json() // access token set to yahilo io cookie
 
     return data
   } catch (error) {
@@ -201,7 +201,7 @@ const getAuthUrl = (mode) => {
 }
 
 export const init = async function (id) {
-  tokenStore.clientId = id;
+  tokenStore.clientId = id
   const code = getCodeInUrl()
   // var cookie;
   if (code) {
@@ -222,7 +222,7 @@ async function sendCodeToServer(code) {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
-    const data = await res.json() // access token set to appblox io cookie
+    const data = await res.json() // access token set to yahilo io cookie
     if (location.href.includes('?')) {
       history.pushState({}, null, location.href.split('?')[0])
     }

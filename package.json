@@ -1,12 +1,12 @@
 {
-  "name": "blox-js-sdk",
+  "name": "yah-js-sdk",
   "version": "0.1.3",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "https://github.com/Appblox/blox-js-sdk/",
+  "repository": "https://github.com/Yahilo/yah-js-sdk/",
   "author": "",
   "license": "ISC",
   "dependencies": {
