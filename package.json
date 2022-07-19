@@ -1,0 +1,17 @@
+{
+  "name": "blox-js-sdk",
+  "version": "0.1.3",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/Appblox/blox-js-sdk/",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "query-string": "^7.1.1",
+    "react": "^17.0.2"
+  },
+  "devDependencies": {}
+}
