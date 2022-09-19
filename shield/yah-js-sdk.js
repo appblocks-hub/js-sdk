@@ -152,13 +152,14 @@ export const verifyLogin = async (mode = 'login') => {
   }
 }
 const validateAccessToken = async () => {
-  const server = `${authorizationEndpoint}validate-yahilo-acess-token`
+  const server = `${authorizationEndpoint}verify-appblocks-acess-token`
   try {
     const res = await fetch(server, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${tokenStore.getToken()}`,
+        'Client-Id': tokenStore.clientId,
       },
     })
     const data = await res.json() // access token set to appblocks io cookie
