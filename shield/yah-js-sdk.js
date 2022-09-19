@@ -3,7 +3,7 @@ import qs from 'query-string'
 const base = window.location.origin
 let clientId = null
 const authorizationEndpoint =
-  process.env && process.env.SHIELD_AUTH_URL
+  process && process.env && process.env.SHIELD_AUTH_URL
     ? process.env.SHIELD_AUTH_URL
     : 'https://shield.appblocks.com/'
 
