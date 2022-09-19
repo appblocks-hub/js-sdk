@@ -1,1 +1,1 @@
-export * from './yah-js-sdk'
+export * from './js-sdk'
