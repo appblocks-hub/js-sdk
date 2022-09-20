@@ -1,29 +1,29 @@
-yah-js-sdk
+js-sdk
 ===========
 
-Client libraries includes methods to use SHIELD, libraries to ease the use of Webpack Module Federation - Promise based loading. It provides the essential packages to facilitate yahilo features across yahilo applications.
+Client libraries includes methods to use SHIELD, libraries to ease the use of Webpack Module Federation - Promise based loading. It provides the essential packages to facilitate appblocks features across appblocks applications.
 
-As of now, yah-js-sdk contains the following
+As of now, js-sdk contains the following
 - [shield](#shield)
 - [ab-federation-helpers](#ab-federation-helpers)
 
-shield helps to setup authentication for your application. It contains many methods to setup user authentication with shield and obtain tokens across yahilo applications.
+shield helps to setup authentication for your application. It contains many methods to setup user authentication with shield and obtain tokens across appblocks applications.
 
 ab-federation-helpers contains hooks and methods to facilitate federated Components and Modules
 
 Installation
 ---------------
-        npm i yah-js-sdk
+        npm i @appblocks/js-sdk
 
 Usage
 -----
-        import { shield } from 'yah-js-sdk/shield'
+        import { shield } from 'js-sdk/shield'
 
-        import { useFederatedComponent } from 'yah-js-sdk/ab-federation-helpers'
+        import { useFederatedComponent } from 'js-sdk/ab-federation-helpers'
 
 ---
 # shield
-yah-js-sdk/shield includes the following elements
+js-sdk/shield includes the following elements
 1. [tokenStore](#tokenstore)
 2. [init](#init)
 3. [verifyLogin](#verifylogin)

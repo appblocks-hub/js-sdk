@@ -1,12 +1,12 @@
 {
-  "name": "yah-js-sdk",
-  "version": "0.1.5",
+  "name": "js-sdk",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "https://github.com/yahilo/yah-js-sdk/",
+  "repository": "https://github.com/appblocks-hub/js-sdk/",
   "author": "",
   "license": "ISC",
   "dependencies": {

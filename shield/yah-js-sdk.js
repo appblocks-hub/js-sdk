@@ -3,9 +3,9 @@ import qs from 'query-string'
 const base = window.location.origin
 let clientId = null
 const authorizationEndpoint =
-  process.env && process.env.SHIELD_AUTH_URL
+  process && process.env && process.env.SHIELD_AUTH_URL
     ? process.env.SHIELD_AUTH_URL
-    : 'https://shield.yahilo.com/'
+    : 'https://shield.appblocks.com/'
 
 const getCodeInUrl = function () {
   const parsedQuery = qs.parseUrl(window.location.href)
@@ -152,16 +152,17 @@ export const verifyLogin = async (mode = 'login') => {
   }
 }
 const validateAccessToken = async () => {
-  const server = `${authorizationEndpoint}validate-yahilo-acess-token`
+  const server = `${authorizationEndpoint}verify-appblocks-acess-token`
   try {
     const res = await fetch(server, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${tokenStore.getToken()}`,
+        'Client-Id': tokenStore.clientId,
       },
     })
-    const data = await res.json() // access token set to yahilo io cookie
+    const data = await res.json() // access token set to appblocks io cookie
 
     return data.data && data.data === 'valid'
   } catch (error) {
@@ -178,7 +179,7 @@ const shieldLogout = async () => {
         Authorization: `Bearer ${tokenStore.getToken()}`,
       },
     })
-    const data = await res.json() // access token set to yahilo io cookie
+    const data = await res.json() // access token set to appblocks io cookie
 
     return data
   } catch (error) {
@@ -222,7 +223,7 @@ async function sendCodeToServer(code) {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
-    const data = await res.json() // access token set to yahilo io cookie
+    const data = await res.json() // access token set to appblocks io cookie
     if (location.href.includes('?')) {
       history.pushState({}, null, location.href.split('?')[0])
     }
