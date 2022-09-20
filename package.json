@@ -1,5 +1,5 @@
 {
-  "name": "js-sdk",
+  "name": "@appblocks/js-sdk",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
