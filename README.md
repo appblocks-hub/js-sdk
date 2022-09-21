@@ -17,9 +17,9 @@ Installation
 
 Usage
 -----
-        import { shield } from 'js-sdk/shield'
+        import { shield } from '@appblocks/js-sdk/shield'
 
-        import { useFederatedComponent } from 'js-sdk/ab-federation-helpers'
+        import { useFederatedComponent } from '@appblocks/js-sdk/ab-federation-helpers'
 
 ---
 # shield
