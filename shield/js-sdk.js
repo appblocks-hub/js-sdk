@@ -147,7 +147,7 @@ export const verifyLogin = async (mode = "login") => {
   return isValidToken;
 };
 export const verifyLoginWithoutRedirect = async () => {
-  const isVaidToken = await initValidation(mode);
+  const isVaidToken = await initValidation();
   if (!isVaidToken) {
     tokenStore.clearTokens();
   }
