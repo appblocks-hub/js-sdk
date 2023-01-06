@@ -131,11 +131,17 @@ const refreshAccessToken = async () => {
 };
 
 export const logout = async () => {
+  await _logout();
+
+  await verifyLogin();
+};
+export const logoutWithoutRedirect = async () => {
+  await shieldLogout();
+};
+const _logout = async () => {
   await shieldLogout();
   tokenStore.removeRefreshToken();
   tokenStore.removeToken();
-
-  await verifyLogin();
 };
 export const verifyLogin = async (mode = "login") => {
   const isValidToken = await initValidation(mode);
@@ -235,7 +241,11 @@ async function sendCodeToServer(code) {
     });
     const data = await res.json(); // access token set to appblocks io cookie
     if (location.href.includes("?")) {
-      history.pushState({}, null, location.href.split("?")[0]);
+      const queryArr = location.href.split("?");
+      let paramArr = queryArr[1].split("&");
+      paramArr = paramArr.filter((param) => !param.includes("code="));
+      const url = `${queryArr[0]}?${paramArr.join("&")}`;
+      history.pushState({}, null, url);
     }
     console.log("🚀  file: index.js  line 50  sendCodeToServer  data", data);
     return data;
@@ -250,6 +260,7 @@ export const shield = {
   tokenStore,
   getAuthUrl,
   logout,
+  logoutWithoutRedirect,
   validateAccessToken,
   verifyLoginWithoutRedirect,
 };
