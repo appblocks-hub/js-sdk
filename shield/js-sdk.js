@@ -136,12 +136,11 @@ export const logout = async () => {
   await verifyLogin();
 };
 export const logoutWithoutRedirect = async () => {
-  await shieldLogout();
+  await _logout();
 };
 const _logout = async () => {
   await shieldLogout();
-  tokenStore.removeRefreshToken();
-  tokenStore.removeToken();
+  tokenStore.clearTokens();
 };
 export const verifyLogin = async (mode = "login") => {
   const isValidToken = await initValidation(mode);
