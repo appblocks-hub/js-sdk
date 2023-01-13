@@ -1,6 +1,6 @@
 import qs from "query-string";
 
-const base = window.location.origin;
+const base = location.href
 let clientId = null;
 const authorizationEndpoint =
   process && process.env && process.env.SHIELD_AUTH_URL
