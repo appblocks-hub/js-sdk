@@ -156,7 +156,7 @@ export const verifyLoginWithoutRedirect = async () => {
 
 const validateAccessToken = async () => {
   const server = `${authorizationEndpoint}verify-appblocks-acess-token`
-  let token = tokenStore.getToken()
+  const token = tokenStore.getToken()
   if (token) {
     try {
       const res = await fetch(server, {
