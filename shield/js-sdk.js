@@ -1,6 +1,7 @@
 import qs from 'query-string'
 
 const base = location.href
+console.log('cookie-testing')
 let clientId = null
 const authorizationEndpoint = process?.env?.SHIELD_AUTH_URL
   ? process.env.SHIELD_AUTH_URL
@@ -107,6 +108,7 @@ const refreshAccessToken = async () => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${tokenStore.getToken()} ${tokenStore.getRefreshToken()}`,
       },
+      credentials: 'include',
     })
     const data = await res.json()
     if (data && data.data.AccessToken) {
@@ -166,6 +168,7 @@ const validateAccessToken = async () => {
           Authorization: `Bearer ${token}`,
           'Client-Id': tokenStore.clientId,
         },
+        credentials: 'include',
       })
       const data = await res.json() // access token set to appblocks io cookie
       const validation = data?.data === 'valid'
@@ -187,6 +190,7 @@ const shieldLogout = async () => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${tokenStore.getToken()}`,
       },
+      credentials: 'include',
     })
     const data = await res.json() // access token set to appblocks io cookie
 
@@ -231,6 +235,7 @@ async function sendCodeToServer(code) {
     const res = await fetch(server, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
     })
     const data = await res.json() // access token set to appblocks io cookie
     if (location.href.includes('?')) {
