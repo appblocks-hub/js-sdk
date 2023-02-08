@@ -2,7 +2,6 @@ import qs from 'query-string'
 
 const base = location.href
 console.log('cookie-testing')
-let clientId = null
 const authorizationEndpoint = process?.env?.SHIELD_AUTH_URL
   ? process.env.SHIELD_AUTH_URL
   : 'https://shield.appblocks.com/'
@@ -181,6 +180,24 @@ const validateAccessToken = async () => {
     return false
   }
 }
+
+const validateCookie = async () => {
+  const server = `${authorizationEndpoint}validate-idt`
+  try {
+    const res = await fetch(server, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+    const data = await res.json()
+    return data?.success
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const shieldLogout = async () => {
   const server = `${authorizationEndpoint}logout`
   try {
@@ -261,4 +278,5 @@ export const shield = {
   logoutWithoutRedirect,
   validateAccessToken,
   verifyLoginWithoutRedirect,
+  validateCookie,
 }
