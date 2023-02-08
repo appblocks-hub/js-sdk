@@ -151,8 +151,16 @@ export const verifyLogin = async (mode = 'login') => {
   return isValidToken
 }
 export const verifyLoginWithoutRedirect = async () => {
-  const isVaidToken = await validateAccessToken()
-  return isVaidToken
+  const isValidToken = await validateAccessToken()
+  if (!isValidToken) {
+    let isValidCookie = await validateCookie()
+
+    if (isValidCookie) {
+      const authorizationUrl = getAuthUrl('login')
+      window.location = authorizationUrl
+    }
+  }
+  return isValidToken
 }
 
 const validateAccessToken = async () => {
@@ -195,6 +203,7 @@ const validateCookie = async () => {
     return data?.success
   } catch (error) {
     console.log(error)
+    return false
   }
 }
 
