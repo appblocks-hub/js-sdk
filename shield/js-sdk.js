@@ -1,7 +1,7 @@
 import qs from 'query-string'
 
 const base = location.href
-let clientId = null
+console.log('cookie-testing')
 const authorizationEndpoint = process?.env?.SHIELD_AUTH_URL
   ? process.env.SHIELD_AUTH_URL
   : 'https://shield.appblocks.com/'
@@ -107,6 +107,7 @@ const refreshAccessToken = async () => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${tokenStore.getToken()} ${tokenStore.getRefreshToken()}`,
       },
+      credentials: 'include',
     })
     const data = await res.json()
     if (data && data.data.AccessToken) {
@@ -150,8 +151,16 @@ export const verifyLogin = async (mode = 'login') => {
   return isValidToken
 }
 export const verifyLoginWithoutRedirect = async () => {
-  const isVaidToken = await validateAccessToken()
-  return isVaidToken
+  const isValidToken = await validateAccessToken()
+  if (!isValidToken) {
+    let isValidCookie = await validateCookie()
+
+    if (isValidCookie) {
+      const authorizationUrl = getAuthUrl('login')
+      window.location = authorizationUrl
+    }
+  }
+  return isValidToken
 }
 
 const validateAccessToken = async () => {
@@ -166,6 +175,7 @@ const validateAccessToken = async () => {
           Authorization: `Bearer ${token}`,
           'Client-Id': tokenStore.clientId,
         },
+        credentials: 'include',
       })
       const data = await res.json() // access token set to appblocks io cookie
       const validation = data?.data === 'valid'
@@ -178,6 +188,25 @@ const validateAccessToken = async () => {
     return false
   }
 }
+
+const validateCookie = async () => {
+  const server = `${authorizationEndpoint}validate-idt`
+  try {
+    const res = await fetch(server, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+    const data = await res.json()
+    return data?.success
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
+
 const shieldLogout = async () => {
   const server = `${authorizationEndpoint}logout`
   try {
@@ -187,6 +216,7 @@ const shieldLogout = async () => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${tokenStore.getToken()}`,
       },
+      credentials: 'include',
     })
     const data = await res.json() // access token set to appblocks io cookie
 
@@ -231,6 +261,7 @@ async function sendCodeToServer(code) {
     const res = await fetch(server, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
     })
     const data = await res.json() // access token set to appblocks io cookie
     if (location.href.includes('?')) {
@@ -256,4 +287,5 @@ export const shield = {
   logoutWithoutRedirect,
   validateAccessToken,
   verifyLoginWithoutRedirect,
+  validateCookie,
 }
