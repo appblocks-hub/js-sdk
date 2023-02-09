@@ -1,7 +1,5 @@
 import qs from 'query-string'
 
-const base = location.href
-console.log('cookie-testing')
 const authorizationEndpoint = process?.env?.SHIELD_AUTH_URL
   ? process.env.SHIELD_AUTH_URL
   : 'https://shield.appblocks.com/'
@@ -33,10 +31,7 @@ class TokenStore {
   _client_id = null
   sendRefreshBefore = 10000
   timeoutHandle
-  setToken(token) {
-    this.t = token
-    localStorage.setItem('_ab_t', token)
-  }
+
   initRefreshCycle() {
     clearTimeout(this.timeoutHandle)
     let expiresIn = this.getExpiry()
@@ -71,6 +66,13 @@ class TokenStore {
   getExpiry() {
     return this.te || localStorage.getItem('_ab_t_e')
   }
+  setToken(token) {
+    this.t = token
+    localStorage.setItem('_ab_t', token)
+  }
+  getToken() {
+    return this.t || localStorage.getItem('_ab_t')
+  }
   removeToken(token) {
     this.t = token
     localStorage.removeItem('_ab_t')
@@ -79,15 +81,12 @@ class TokenStore {
     this.rt = token
     localStorage.setItem('_ab_rt', token)
   }
+  getRefreshToken() {
+    return this.rt || localStorage.getItem('_ab_rt')
+  }
   removeRefreshToken(token) {
     this.rt = token
     localStorage.removeItem('_ab_rt')
-  }
-  getToken() {
-    return this.t || localStorage.getItem('_ab_t')
-  }
-  getRefreshToken() {
-    return this.rt || localStorage.getItem('_ab_rt')
   }
   clearTokens() {
     this.removeRefreshToken()
@@ -130,18 +129,18 @@ const refreshAccessToken = async () => {
   }
 }
 
+const _logout = async () => {
+  await shieldLogout()
+  tokenStore.clearTokens()
+}
 export const logout = async () => {
   await _logout()
-
   await verifyLogin()
 }
 export const logoutWithoutRedirect = async () => {
   await _logout()
 }
-const _logout = async () => {
-  await shieldLogout()
-  tokenStore.clearTokens()
-}
+
 export const verifyLogin = async (mode = 'login') => {
   const isValidToken = await validateAccessToken()
   if (!isValidToken) {
@@ -229,7 +228,7 @@ const getAuthUrl = (mode) => {
   const oAuthQueryParams = {
     response_type: 'code',
     scope: 'user private_repo',
-    redirect_uri: base,
+    redirect_uri: location.href,
     client_id: tokenStore.clientId,
     state: 'state123',
   }
@@ -256,7 +255,7 @@ export const init = async function (id) {
 }
 
 async function sendCodeToServer(code) {
-  const server = `${authorizationEndpoint}auth/get-token?grant_type=authorization_code&code=${code}&redirect_uri=${base}`
+  const server = `${authorizationEndpoint}auth/get-token?grant_type=authorization_code&code=${code}&redirect_uri=${location.href}`
   try {
     const res = await fetch(server, {
       method: 'GET',
@@ -267,11 +266,15 @@ async function sendCodeToServer(code) {
     if (location.href.includes('?')) {
       const queryArr = location.href.split('?')
       let paramArr = queryArr[1].split('&')
-      paramArr = paramArr.filter((param) => !param.includes('code='))
-      const url = `${queryArr[0]}?${paramArr.join('&')}`
+      paramArr = paramArr.filter(
+        (param) => !['code=', 'state='].some((v) => param.includes(v))
+      )
+      const url = paramArr.length
+        ? `${queryArr[0]}?${paramArr.join('&')}`
+        : queryArr[0]
       history.pushState({}, null, url)
     }
-    console.log('🚀  file: index.js  line 50  sendCodeToServer  data', data)
+    console.log('🚀 sendCodeToServer  data', data)
     return data
   } catch (error) {
     console.log(error)
