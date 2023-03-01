@@ -182,6 +182,7 @@ const validateAccessToken = async () => {
       return validation
     } catch (error) {
       console.log(error)
+      return false
     }
   } else {
     return false
