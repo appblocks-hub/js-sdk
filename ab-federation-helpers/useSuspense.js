@@ -2,11 +2,16 @@ import { loadComponent } from './utils'
 
 const cache = {}
 const errorsCache = {}
-const urlCache = new Set()
+if (!window?.__ab__?.urlCache) {
+  window.__ab__ = {
+    urlCache: new Set(),
+  }
+}
+// const urlCache = new Set()
 const loadDynamicScript = (url) => {
   if (!url) return
 
-  if (urlCache.has(url)) {
+  if (window.__ab__.urlCache.has(url)) {
     return Promise.resolve(true)
   }
   return new Promise((resolve, reject) => {
@@ -17,7 +22,7 @@ const loadDynamicScript = (url) => {
     element.async = true
 
     element.onload = () => {
-      urlCache.add(url)
+      window.__ab__.urlCache.add(url)
       resolve(true)
     }
 
