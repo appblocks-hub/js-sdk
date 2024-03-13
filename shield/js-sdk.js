@@ -1,7 +1,7 @@
 import qs from 'query-string'
 
-const authorizationEndpoint = process?.env?.SHIELD_AUTH_URL
-  ? process.env.SHIELD_AUTH_URL
+const authorizationEndpoint = process?.env?.BB_SHIELD_AUTH_URL
+  ? process.env.BB_SHIELD_AUTH_URL
   : 'https://shield.appblocks.com/'
 
 const getCodeInUrl = function () {
